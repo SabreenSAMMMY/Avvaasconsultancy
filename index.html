@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaas Consultancy - Refund Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+        .logo {
+            width: 300px; /* Increased logo size by 200% from 150px */
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="password"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input[readonly] {
+            background-color: #f9f9f9;
+        }
+        .banner {
+            background-color: #ff0000;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            margin-bottom: 15px;
+        }
+        .disclaimer {
+            color: #333;
+            font-size: 12px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .login-form input {
+            font-size: 32px; /* Double the default font size */
+        }
+        .login-form label {
+            font-size: 24px; /* Larger label font size */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="login-form" class="login-form">
+        <!-- Updated logo -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8b/AWAS_logo.svg" alt="Avaas Consultancy Logo" class="logo">
+        <h1>Login</h1>
+        <p id="error-message" class="error"></p>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+        <button type="button" class="btn" onclick="validateLogin()">Login</button>
+    </div>
+
+    <div class="container" id="refund-form" style="display:none;">
+        <!-- Updated logo above the form -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8b/AWAS_logo.svg" alt="Avaas Consultancy Logo" class="logo">
+        <h1>Refund Request Form</h1>
+        
+        <!-- Running Banner -->
+        <marquee class="banner" behavior="scroll" direction="left">
+            Transaction charges and Forex charges have to be paid by the candidate prior to initiation of the refund.
+        </marquee>
+
+        <form id="refund-form-data" onsubmit="handleSubmit(event)">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+
+            <label for="account">Bank Account Number</label>
+            <input type="text" id="account" name="account" placeholder="Enter your bank account number" required>
+
+            <label for="ifsc">IFSC Code</label>
+            <input type="text" id="ifsc" name="ifsc" placeholder="Enter your bank IFSC code" required>
+
+            <label for="swift">SWIFT Code</label>
+            <input type="text" id="swift" name="swift" placeholder="Enter your bank SWIFT code" required>
+
+            <label for="amount-usd">Amount to be Refunded (in USD)</label>
+            <input type="number" id="amount-usd" name="amount_usd" placeholder="Enter the amount in USD" required oninput="calculateCharges()">
+
+            <label for="forex-charges">Forex and Transaction Charges (5.85% of USD)</label>
+            <input type="number" id="forex-charges" name="forex_charges" placeholder="Forex and transaction charges" readonly>
+
+            <!-- New Field for UTR Number -->
+            <label for="utr-number">Payment UTR Number for Transaction Charges (Optional)</label>
+            <input type="text" id="utr-number" name="utr_number" placeholder="Enter your UTR number">
+
+            <button type="submit" class="btn">Submit</button>
+        </form>
+
+        <!-- Disclaimer Note -->
+        <p class="disclaimer">
+            Transaction charges and Forex charges have to be paid by the candidate prior to initiation of the refund.
+        </p>
+    </div>
+
+    <script>
+        // Validate login credentials
+        function validateLogin() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            var errorMessage = document.getElementById('error-message');
+
+            // Check if the username is 'Suhas' and the password is 'Suhas123'
+            if (username === 'Suhas' && password === 'Suhas123') {
+                // Hide the login form and show the refund form
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('refund-form').style.display = 'block';
+            } else {
+                // Display an error message
+                errorMessage.textContent = 'Invalid username or password!';
+            }
+        }
+
+        // Calculate Forex and Transaction Charges (5.85% of USD amount)
+        function calculateCharges() {
+            var usdAmount = document.getElementById('amount-usd').value;
+            var charges = usdAmount * 0.0585;
+            document.getElementById('forex-charges').value = charges.toFixed(2);
+        }
+
+        // Handle form submission
+        function handleSubmit(event) {
+            event.preventDefault(); // Prevent actual form submission
+            var forexCharges = document.getElementById('forex-charges').value;
+            // Show alert message with forex charges
+            alert('Please pay the amount shown in the Forex and Transaction Charges field: $' + forexCharges + '. Contact your HR partner.');
+        }
+    </script>
+
+</body>
+</html>
